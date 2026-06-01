@@ -59,6 +59,7 @@ class RuleBasedOperationalWorldModel(BaseOperationalWorldModel):
             control_decision,
             skill_decision,
             selected_prompt_modules,
+            selected_tools,
         )
         predicted_state, notes = self._predict_state(
             state,
