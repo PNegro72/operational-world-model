@@ -76,6 +76,9 @@ class SkillRouter:
                     "suggested_subcontrol": "core_vs_site",
                     "group_by": "fecha",
                     "metric": "incosistencias",
+                    "query_intent": "data_query",
+                    "analysis_mode": "grouped_count_by_date",
+                    "requires_sql": True,
                 },
             )
 
