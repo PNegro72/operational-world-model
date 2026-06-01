@@ -95,6 +95,16 @@ class RuleBasedOperationalWorldModel(BaseOperationalWorldModel):
             facts["reconciliation_status"] = "matched" if delta == 0 else "requires_adjustment"
             notes.append("Wallet reconciliation rule evaluated balance delta.")
 
+        if skill_name == "sql_skill":
+            facts["control"] = skill_inputs.get("control", facts.get("parent_control"))
+            facts["suggested_subcontrol"] = skill_inputs.get("suggested_subcontrol", "core_vs_site")
+            facts["group_by"] = skill_inputs.get("group_by", "fecha")
+            facts["metric"] = skill_inputs.get("metric", "incosistencias")
+            facts["query_intent"] = "data_query"
+            facts["analysis_mode"] = "grouped_count_by_date"
+            facts["requires_sql"] = True
+            notes.append("SQL planning rule selected control, subcontrol, grouping, and metric.")
+
         if control_action == "escalate":
             facts["escalation_required"] = True
             notes.append("Escalation flag added to predicted state.")

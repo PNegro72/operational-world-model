@@ -26,6 +26,16 @@ class DynamicPromptBuilder:
                 sections.append(self._risk(state, control_decision))
             elif module == "reconciliation":
                 sections.append(self._reconciliation(skill_decision))
+            elif module == "pf_context":
+                sections.append(self._pf_context(state))
+            elif module == "agentic_wh_rules":
+                sections.append("Agentic WH: plan control, skill, prompt modules, and tools without executing them.")
+            elif module == "control_routing_rules":
+                sections.append("Control routing: map Conciliaciones: Interfaces to core_vs_site for Plazo Fijo.")
+            elif module == "sql_generation_rules":
+                sections.append("SQL generation: answer date-based inconsistency questions with grouped counts by fecha.")
+            elif module == "core_vs_site_rules":
+                sections.append("Core vs Site: analyze records from Core toward Site/interface. Do not generate inverse analysis unless explicitly requested and supported.")
             else:
                 sections.append(f"{module.title()}: enabled")
 
@@ -62,3 +72,9 @@ class DynamicPromptBuilder:
     def _reconciliation(self, skill_decision: SkillDecision) -> str:
         delta = skill_decision.inputs.get("balance_delta", 0)
         return f"Reconciliation delta: {delta}. Verify source balances before action."
+
+    def _pf_context(self, state: OperationalState) -> str:
+        question = state.facts.get("question", "")
+        product = state.facts.get("product", "")
+        origin = state.facts.get("control_origin", "")
+        return f"PF context: product={product}; control_origin={origin}; question={question}"
